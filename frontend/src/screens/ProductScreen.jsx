@@ -1,11 +1,24 @@
 import {useParams} from 'react-router-dom'
-import products from '../products'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Rating from '../components/Rating'
 import BackButton from '../components/BackButton'
 
 function ProductScreen() {
     const params = useParams()
-    const product = products.find(p => p._id === params.id)
+    const [product, setProduct] = useState({})
+
+    useEffect(() => {
+        console.log(params.id)
+        const fetchProduct = async () => {
+            const res = await axios.get(`/api/products/${params.id}`)
+
+            setProduct(res.data)
+            console.log(res.data)
+        }
+
+        fetchProduct()
+    }, [params.id])
 
   return (
     <div className='mx-20'>
@@ -16,7 +29,7 @@ function ProductScreen() {
             </div>
             <div className='grid grid-cols-1 lg:grid-cols-2'>
                 <div className="flex flex-col w-full px-2 my-4 lg:my-0">
-                    <h1 className='text-black text-2xl lg:text-4xl'>{product.name.toLocaleUpperCase()}</h1> 
+                    <h1 className='text-black text-2xl lg:text-4xl'>{product.name}</h1> 
                     <div className="divider"></div> 
                     <Rating value={product.rating} text={`${product.numReviews} Reviews`} color='#affc41' />
                     <div className="divider"></div> 

@@ -1,0 +1,20 @@
+{
+  "name": "e-mart",
+  "version": "1.0.0",
+  "description": "E-Mart is e-commerce site",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server"
+  },
+  "author": "abu-tech",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
