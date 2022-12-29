@@ -1,19 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
+import {useSelector, useDispatch} from 'react-redux'
+import {toast} from 'react-toastify'
+import {getAllProducts} from '../features/products/productSlice'
 import Product from '../components/Product'
-import axios from 'axios'
+import Loader from '../components/Loader'
 
 function HomeScreen() {
-  const [products, setProducts] = useState([])
+  const {products, isError, isLoading, message} = useSelector(state => state.products)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await axios.get('/api/products')
-
-      setProducts(response.data)
+    dispatch(getAllProducts())
+    
+    if(isError){
+      toast.error(message)
     }
+  }, [dispatch, isError, message])
 
-    fetchProducts()
-  }, [])
+  if(isLoading){
+    return <Loader />
+  }
 
   return (
     <>
