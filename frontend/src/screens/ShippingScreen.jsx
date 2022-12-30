@@ -4,7 +4,7 @@ import {FaAddressCard, FaCity} from 'react-icons/fa'
 import {GiPostOffice, GiVillage} from 'react-icons/gi'
 import {useNavigate} from 'react-router-dom'
 import {reset, saveShippingAddress} from '../features/cart/cartSlice'
-import CheckOut from '../components/CheckOut'
+import CheckOutSteps from '../components/CheckOutSteps'
 
 function ShippingScreen() {
   const {shippingAddress} = useSelector(state => state.cart)
@@ -33,7 +33,7 @@ function ShippingScreen() {
 
   return (
     <div className="mx-auto my-4 w-4/5 lg:w-1/3">
-      <CheckOut step1 step2 />
+      <CheckOutSteps step1 step2 />
       <h1 className="text-black text-center text-3xl my-4">SHIPPING</h1>
        <div className="form-control">
           <label className="label">

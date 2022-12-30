@@ -1,6 +1,5 @@
 import {Link, useNavigate} from 'react-router-dom'
-import {MdShoppingCart} from 'react-icons/md'
-import {FaUserAlt, FaUserAstronaut} from 'react-icons/fa'
+import {FaUserAlt, FaUserAstronaut, FaFeatherAlt} from 'react-icons/fa'
 import {ImCart} from 'react-icons/im'
 import { useSelector, useDispatch } from 'react-redux'
 import {logout} from '../features/auth/authSlice'
@@ -20,9 +19,12 @@ function Header() {
   return (
       <div className="navbar bg-zinc-900 text-white shadow-md sticky top-0 z-50">
         <div className="navbar-start">
-          <Link to='/' className="btn btn-ghost normal-case text-lg lg:text-2xl lg:mx-12"><MdShoppingCart /><p className='mx-2'>E-Mart</p></Link>
+          <Link to='/' className="btn btn-ghost normal-case text-lg lg:text-2xl lg:mx-12"><FaFeatherAlt /><p className='mx-2'>E-Mart</p></Link>
         </div>
         <div className="navbar-end">
+              <div className="form-control lg:mx-4">
+                <input type="text" placeholder="Search" className="input input-bordered text-black" />
+              </div>
               <Link to='/cart' className="btn bg-white btn-circle text-black hover:bg-white hover:scale-105 lg:mx-4">
                   <ImCart />
               </Link>

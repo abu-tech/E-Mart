@@ -1,12 +1,12 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import products from './data/products.js'
 import colors from 'colors'
 import cors from 'cors'
 import connectDB from './config/db.js'
 import errorHandler from './middleware/errorMiddleware.js'
 import productRoutes from './routes/productsRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -20,6 +20,7 @@ app.use(cors({origin: true, credentials: true}))
 
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/orders', orderRoutes)
 
 app.use(errorHandler)
 

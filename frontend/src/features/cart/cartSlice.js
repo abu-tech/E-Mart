@@ -3,10 +3,13 @@ import cartService from './cartService'
 
 const cartItemFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
 const shippingAddressFromStorage = localStorage.getItem('shippingaddress') ? JSON.parse(localStorage.getItem('shippingaddress')) : {}
+const paymentMethodFromStorage = localStorage.getItem('paymentMethod') ? JSON.parse(localStorage.getItem('paymentMethod')) : ''
+
 
 const initialState = {
     cartItems: cartItemFromStorage,
     shippingAddress: shippingAddressFromStorage,
+    paymentMethod: paymentMethodFromStorage,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -41,6 +44,10 @@ export const cartSlice = createSlice({
         saveShippingAddress: (state, action) => {
             state.shippingAddress = action.payload
             localStorage.setItem('shippingaddress', JSON.stringify(state.shippingAddress))
+        },
+        savePaymentMethod: (state, action) => {
+            state.paymentMethod = action.payload
+            localStorage.setItem('paymentMethod', JSON.stringify(state.paymentMethod))
         }
     }, 
     extraReducers: (builder) => {
@@ -77,5 +84,5 @@ export const cartSlice = createSlice({
     }
 })
 
-export const {reset, saveShippingAddress} = cartSlice.actions
+export const {reset, saveShippingAddress, savePaymentMethod} = cartSlice.actions
 export default cartSlice.reducer

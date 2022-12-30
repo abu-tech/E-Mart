@@ -10,6 +10,9 @@ import LoginScreen from "./screens/LoginScreen"
 import RegisterScreen from './screens/RegisterScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import ShippingScreen from './screens/ShippingScreen'
+import PaymentMethodScreen from './screens/PaymentMethodScreen'
+import PlaceOrderScreen from './screens/PlaceOrderScreen'
+import OrderScreen from './screens/OrderScreen'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
@@ -29,6 +32,15 @@ function App() {
               </Route>
               <Route path='/shipping' element={<PrivateRoute />}>
                 <Route path='/shipping' element={<ShippingScreen />} />
+              </Route>
+              <Route path='/payment' element={<PrivateRoute />}>
+                <Route path='/payment' element={<PaymentMethodScreen />} />
+              </Route>
+              <Route path='/placeorder' element={<PrivateRoute />}>
+                <Route path='/placeorder' element={<PlaceOrderScreen />} />
+              </Route>
+              <Route path='/orders/:id' element={<PrivateRoute />}>
+                <Route path='/orders/:id' element={<OrderScreen />} />
               </Route>
             </Routes>
           </main>
