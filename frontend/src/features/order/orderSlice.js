@@ -2,7 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import orderService from './orderService'
 
 const initialState = {
-    order: {},
+    order: {
+        user:{},
+        orderItems:[],
+        shippingAddress:{},
+    },
+    paymentUrl: null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -31,6 +36,17 @@ export const getOrderDetails = createAsyncThunk('order/get', async (orderId, thu
     }
 })
 
+export const payOrder = createAsyncThunk('order/pay', async (order, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await orderService.payOrder(order, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const orderSlice = createSlice({
     name: 'order',
     initialState,
@@ -40,6 +56,7 @@ export const orderSlice = createSlice({
             state.isError = false
             state.isSuccess = false 
             state.message = ''
+            state.paymentUrl = null
         }
     },
     extraReducers: (builder) => {
@@ -66,6 +83,21 @@ export const orderSlice = createSlice({
             state.order = action.payload
         })
         .addCase(getOrderDetails.rejected, (state,  action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+        })
+        .addCase(payOrder.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(payOrder.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.paymentUrl = action.payload
+            localStorage.removeItem('cartItems')
+            localStorage.removeItem('paymentMethod')
+        })
+        .addCase(payOrder.rejected, (state,  action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload

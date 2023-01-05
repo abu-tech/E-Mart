@@ -39,9 +39,10 @@ function App() {
               <Route path='/placeorder' element={<PrivateRoute />}>
                 <Route path='/placeorder' element={<PlaceOrderScreen />} />
               </Route>
-              <Route path='/orders/:id' element={<PrivateRoute />}>
+              {/* <Route path='/orders/:id' element={<PrivateRoute />}>
                 <Route path='/orders/:id' element={<OrderScreen />} />
-              </Route>
+              </Route> */}
+              <Route path='/orders/:id' element={<OrderScreen />} />
             </Routes>
           </main>
         <Footer />

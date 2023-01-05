@@ -1,25 +1,46 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import {toast} from 'react-toastify'
-import {getOrderDetails, reset} from '../features/order/orderSlice'
+import {getOrderDetails, reset, payOrder} from '../features/order/orderSlice'
 import Loader from '../components/Loader'
 
 function OrderScreen() {
-    const {order, isSuccess, isError, isLoading, message} = useSelector(state => state.order)
-
-    //calculate prices
-    // const itemsPrice = Number(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0))
+    const {order, paymentUrl, isSuccess, isError, isLoading, message} = useSelector(state => state.order)
     const dispatch = useDispatch()
     const params = useParams()
-
-    useEffect(() => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const orderId = params.id
+    const itemsPrice = Number(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0))
+ 
+    function fetchOrderDetails() {
         if(isError){
-            toast.error(message)
+          toast.error(message)
+        }      
+        dispatch(getOrderDetails(orderId))
+      }
+      
+    useEffect(() => {
+        fetchOrderDetails()
+
+        if(searchParams.get('failed') === 'true'){
+            toast.error('Payment Failed!')
+            setSearchParams('')
         }
 
-        dispatch(getOrderDetails(params.id))
-    }, [isError, message, dispatch, params.id])
+        // eslint-disable-next-line
+    }, [searchParams])
+
+    if(isSuccess){
+        if(paymentUrl !== null){
+            window.location.href = paymentUrl.url
+        }
+        dispatch(reset())
+    }
+
+    const payHandler = async () => {
+        dispatch(payOrder(order))
+    }
 
     if(isLoading){
         return <Loader />
@@ -29,22 +50,55 @@ function OrderScreen() {
     <>
         <div className="flex flex-col lg:flex-row mx-12 mt-4 p-4">
             <div className='flex-auto w-2/3'>
+                <h1 className='text-3xl font-semibold px-4'>Order ID: {order._id}</h1>
                 <div className='border-b-2 p-4'>
                     <h1 className='text-2xl mb-2'>Shipping</h1>
-                    <p className='text-md font-medium'>
+                    <p className='text-md font-medium my-1'><strong>Name:&nbsp;</strong>{order.user.name}</p>
+              <p className='text-md font-medium my-1'><strong>Email:&nbsp;</strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
+                      <p className='text-md font-medium my-1'>
                         <strong>Address:&nbsp;</strong>
                         {order.shippingAddress.address}, 
                         {order.shippingAddress.city}, 
                         {order.shippingAddress.postalCode}, 
                         {order.shippingAddress.country} 
                     </p>
+                    {order.isDelivered ? 
+                        <div className="alert alert-success text-black bg-primary shadow-lg w-1/2 mt-1">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>Delivered On: {new Date(order.deliveredAt).toLocaleString('en-IN')}</span>
+                        </div>
+                        </div>
+                        :
+                        <div className="alert alert-warning shadow-lg w-1/2 mt-1 lg:w-1/5">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            <span>Not Delivered</span>
+                        </div>
+                        </div>
+                    }
                 </div>
                 <div className='border-b-2 p-4'>
                     <h1 className='text-2xl mb-2'>Payment Method</h1>
-                    <p className='text-md font-medium'>
+                    <p className='text-md font-medium my-1'>
                         <strong>Method:&nbsp;</strong>
                         {order.paymentMethod}
                     </p>
+                    {order.isPaid ? 
+                        <div className="alert alert-success text-black bg-primary shadow-lg w-1/2 mt-1">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>Paid On: {new Date(order.paidAt).toLocaleString('en-IN')}</span>
+                        </div>
+                        </div>
+                        :
+                        <div className="alert alert-warning shadow-lg w-1/2 mt-1 lg:w-1/6">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            <span>Not Paid</span>
+                        </div>
+                        </div>
+                    }
                 </div>
                 <div className='p-4'>
                 <h1 className='text-2xl mb-2'>Order Items</h1>
@@ -74,7 +128,7 @@ function OrderScreen() {
                     </div>
                     <div className="grid grid-cols-2 text-xl font-medium text-black">
                         <h1 className='m-auto'>Items:</h1>
-                        <h1 className='m-auto '>&#8377;</h1>
+                        <h1 className='m-auto '>&#8377; {itemsPrice}</h1>
                     </div>
                     <div className="grid grid-cols-2 text-xl font-medium text-black">
                         <h1 className='m-auto'>Shipping:</h1>
@@ -88,6 +142,9 @@ function OrderScreen() {
                         <h1 className='m-auto'>Total:</h1>
                         <h1 className='m-auto'>&#8377; {order.totalPrice}</h1>
                     </div>
+                </div>
+                <div className="grid grid-cols-1 my-4">
+                        <button className={order.isPaid ? 'hidden' : 'btn mx-5 rounded-none text-white hover:scale-105'} onClick={payHandler}>Proceed To Pay</button>
                 </div>
             </div>
         </div>

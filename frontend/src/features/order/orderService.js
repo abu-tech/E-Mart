@@ -25,9 +25,22 @@ export const getOrder = async (orderId, token) => {
     return res.data
 }
 
+export const payOrder = async (order, token) => {
+    const config = {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const res = await axios.post(API_URL + `/${order._id}/pay`, order, config)
+
+    return res.data
+}
+
 const orderService = {
     createOrder,
-    getOrder
+    getOrder,
+    payOrder
 }
 
 export default orderService

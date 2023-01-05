@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {FaAddressCard, FaCity} from 'react-icons/fa'
 import {GiPostOffice, GiVillage} from 'react-icons/gi'
 import {useNavigate} from 'react-router-dom'
-import {reset, saveShippingAddress} from '../features/cart/cartSlice'
+import {saveShippingAddress} from '../features/cart/cartSlice'
 import CheckOutSteps from '../components/CheckOutSteps'
 
 function ShippingScreen() {

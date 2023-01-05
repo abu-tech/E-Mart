@@ -12,11 +12,17 @@ function PlaceOrderScreen() {
     //calculate prices
     const itemsPrice = Number(cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))
     const shippingPrice = itemsPrice > 500 ? 0 : 50
-    const taxPrice = Number((0.10 * itemsPrice).toFixed(2))
-    const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2)
+    const taxPrice = Number((0.10 * itemsPrice).toFixed(1))
+    const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(1)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    if (!shippingAddress.address) {
+        navigate('/shipping')
+      } else if (!paymentMethod) {
+        navigate('/payment')
+      }
 
     useEffect(() => {
         if(isError){
@@ -25,9 +31,8 @@ function PlaceOrderScreen() {
 
         if(isSuccess){
             navigate(`/orders/${order._id}`)
+            dispatch(reset())
         }
-
-        dispatch(reset())
     }, [isError, isSuccess, message, order, navigate, dispatch])
     
     const placeOrderHandle = () => {

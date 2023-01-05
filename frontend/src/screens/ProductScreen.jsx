@@ -25,7 +25,7 @@ function ProductScreen() {
 
     const handleCart = () => {
         dispatch(addToCart({productId: product._id, qty}))
-        navigate(`/cart/`)
+        navigate('/cart')
     }
 
   return (

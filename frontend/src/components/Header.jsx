@@ -6,7 +6,7 @@ import {logout} from '../features/auth/authSlice'
 import { toast } from 'react-toastify'
 
 function Header() {
-  const {user, isSuccess} = useSelector(state => state.auth)
+  const {user} = useSelector(state => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

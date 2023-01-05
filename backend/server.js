@@ -7,6 +7,7 @@ import errorHandler from './middleware/errorMiddleware.js'
 import productRoutes from './routes/productsRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
+import webhookRoutes from './routes/webhookRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -14,6 +15,7 @@ connectDB()
 
 const PORT = process.env.PORT || 4000
 
+app.use('/api/stripe', webhookRoutes)
 app.use(express.json())
 app.use(express.urlencoded({extended: false }))
 app.use(cors({origin: true, credentials: true}))
