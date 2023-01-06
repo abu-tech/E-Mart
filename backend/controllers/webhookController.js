@@ -4,7 +4,7 @@ import stripe from 'stripe'
 
 //stripe webhook
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "whsec_0fdeb0270f626a4acf23d3051b5a52e4b32be4730e421545fd59572a17420982"
+const endpointSecret = process.env.ENDPOINT_SECRET
 
 const updateOrder = async (req, res) => {
     const sig = req.headers['stripe-signature'];

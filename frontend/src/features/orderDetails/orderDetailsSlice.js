@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import orderService from './orderService'
+import orderDetailsService from './orderDetailsService'
 
 const initialState = {
     order: {
@@ -17,7 +17,7 @@ const initialState = {
 export const createOrder = createAsyncThunk('order/create', async (order, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await orderService.createOrder(order, token)
+        return await orderDetailsService.createOrder(order, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -28,7 +28,7 @@ export const createOrder = createAsyncThunk('order/create', async (order, thunkA
 export const getOrderDetails = createAsyncThunk('order/get', async (orderId, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await orderService.getOrder(orderId, token)
+        return await orderDetailsService.getOrder(orderId, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -39,7 +39,7 @@ export const getOrderDetails = createAsyncThunk('order/get', async (orderId, thu
 export const payOrder = createAsyncThunk('order/pay', async (order, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await orderService.payOrder(order, token)
+        return await orderDetailsService.payOrder(order, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -47,8 +47,8 @@ export const payOrder = createAsyncThunk('order/pay', async (order, thunkAPI) =>
     }
 })
 
-export const orderSlice = createSlice({
-    name: 'order',
+export const orderDetailsSlice = createSlice({
+    name: 'orderDetails',
     initialState,
     reducers: {
         reset: (state) => {
@@ -105,5 +105,5 @@ export const orderSlice = createSlice({
     }
 })
 
-export const {reset} = orderSlice.actions
-export default orderSlice.reducer
+export const {reset} = orderDetailsSlice.actions
+export default orderDetailsSlice.reducer

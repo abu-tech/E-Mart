@@ -3,11 +3,11 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
-import {createOrder, reset} from '../features/order/orderSlice'
+import {createOrder, reset} from '../features/orderDetails/orderDetailsSlice'
 
 function PlaceOrderScreen() {
     const {cartItems, shippingAddress, paymentMethod} = useSelector(state => state.cart)
-    const {order, isSuccess, isError, message} = useSelector(state => state.order)
+    const {order, isSuccess, isError, message} = useSelector(state => state.orderDetails)
 
     //calculate prices
     const itemsPrice = Number(cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))

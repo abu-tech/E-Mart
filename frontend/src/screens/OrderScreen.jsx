@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import {toast} from 'react-toastify'
-import {getOrderDetails, reset, payOrder} from '../features/order/orderSlice'
+import {getOrderDetails, reset, payOrder} from '../features/orderDetails/orderDetailsSlice'
 import Loader from '../components/Loader'
 
 function OrderScreen() {
-    const {order, paymentUrl, isSuccess, isError, isLoading, message} = useSelector(state => state.order)
+    const {order, paymentUrl, isSuccess, isError, isLoading, message} = useSelector(state => state.orderDetails)
     const dispatch = useDispatch()
     const params = useParams()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -54,7 +54,7 @@ function OrderScreen() {
                 <div className='border-b-2 p-4'>
                     <h1 className='text-2xl mb-2'>Shipping</h1>
                     <p className='text-md font-medium my-1'><strong>Name:&nbsp;</strong>{order.user.name}</p>
-              <p className='text-md font-medium my-1'><strong>Email:&nbsp;</strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
+                    <p className='text-md font-medium my-1'><strong>Email:&nbsp;</strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
                       <p className='text-md font-medium my-1'>
                         <strong>Address:&nbsp;</strong>
                         {order.shippingAddress.address}, 

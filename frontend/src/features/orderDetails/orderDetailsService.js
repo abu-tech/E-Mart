@@ -37,10 +37,10 @@ export const payOrder = async (order, token) => {
     return res.data
 }
 
-const orderService = {
+const orderDetailsService = {
     createOrder,
     getOrder,
     payOrder
 }
 
-export default orderService
+export default orderDetailsService

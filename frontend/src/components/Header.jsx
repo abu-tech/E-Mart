@@ -35,7 +35,7 @@ function Header() {
                   </label>
                   <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
                     <li onClick={document.activeElement.blur()}><Link to='/profile' className="justify-between text-black font-medium">Profile</Link></li>
-                    <li className='text-black' onClick={document.activeElement.blur()}><Link className='font-medium' onClick={logoutHandle}>Logout</Link></li>
+                    <li className='text-black' onClick={document.activeElement.blur()}><button className='font-medium' onClick={logoutHandle}>Logout</button></li>
                   </ul>
                 </div> : 
                 <Link to='/login' className="btn bg-white text-black mx-2 hover:bg-white hover:scale-105 lg:mr-12"><FaUserAlt /><p className='ml-2'>signin</p></Link>

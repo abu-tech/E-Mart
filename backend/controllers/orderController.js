@@ -47,6 +47,18 @@ const getOrderById = asyncHandler(async (req, res) => {
     }
 })
 
+const getUserOrders = asyncHandler(async (req, res) => {
+    const orders = await Order.find({user: req.user._id})
+
+    if(orders) {
+        res.status(200).json(orders)
+    } else {
+        res.status(404)
+        throw new Error('Orders not found')
+    }
+})
+
+
 const payOrder = asyncHandler(async (req, res) => {
     const {totalPrice, _id} = req.body
 
@@ -86,5 +98,6 @@ const payOrder = asyncHandler(async (req, res) => {
 export {
     addOrderItems,
     getOrderById,
+    getUserOrders,
     payOrder
 }
