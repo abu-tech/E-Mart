@@ -80,7 +80,7 @@ const payOrder = asyncHandler(async (req, res) => {
                 name: 'E-Mart',
                 description: 'Happy Shopping :)',
             },
-            unit_amount: totalPrice*100
+            unit_amount: Math.round(totalPrice)*100
             },
             quantity: 1,
         },
