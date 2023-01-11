@@ -29,6 +29,18 @@ app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
 
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname, '/frontend/build')))
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    })
+} else {
+    app.get("/", (req, res) => {
+        res.json({message: "API is Running!"})
+    })
+}
+
 app.use(errorHandler)
 
 app.listen(PORT, () => {
