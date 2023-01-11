@@ -29,7 +29,7 @@ const getUser = async (token) => {
             authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.get(API_URL, config)
+    const res = await axios.get(API_URL + '/profile', config)
 
     return res.data
 }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 const API_URL = '/api/orders'
 
-export const getUserOrders = async (token) => {
+const getUserOrders = async (token) => {
     const config = {
         headers:{
             Authorization: `Bearer ${token}`
@@ -13,8 +13,21 @@ export const getUserOrders = async (token) => {
     return res.data
 }
 
+const getAllOrders = async (token) => {
+    const config = {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const res = await axios.get(API_URL, config)
+
+    return res.data
+}
+
 const ordersService = {
-    getUserOrders
+    getUserOrders,
+    getAllOrders
 }
 
 export default ordersService

@@ -2,11 +2,12 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import {toast} from 'react-toastify'
-import {getOrderDetails, reset, payOrder} from '../features/orderDetails/orderDetailsSlice'
+import {getOrderDetails, reset, payOrder, deliverOrder} from '../features/orderDetails/orderDetailsSlice'
 import Loader from '../components/Loader'
 
 function OrderScreen() {
-    const {order, paymentUrl, isSuccess, isError, isLoading, message} = useSelector(state => state.orderDetails)
+    const {order, paymentUrl, isSuccess, isError, isLoading, message, deliverSuccess} = useSelector(state => state.orderDetails)
+    const {user} = useSelector(state => state.auth)
     const dispatch = useDispatch()
     const params = useParams()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -29,7 +30,7 @@ function OrderScreen() {
         }
 
         // eslint-disable-next-line
-    }, [searchParams])
+    }, [searchParams, deliverSuccess])
 
     if(isSuccess){
         if(paymentUrl !== null){
@@ -38,8 +39,12 @@ function OrderScreen() {
         dispatch(reset())
     }
 
-    const payHandler = async () => {
+    const payHandler = () => {
         dispatch(payOrder(order))
+    }
+
+    const deliverHandler = () => {
+        dispatch(deliverOrder(order))
     }
 
     if(isLoading){
@@ -110,7 +115,7 @@ function OrderScreen() {
                     </div>
                     </div> :
                         order.orderItems.map((item) => (
-                            <div className="card card-side bg-base-100 rounded-none h-12 mt-4 border-b-2">
+                            <div key={item._id} className="card card-side bg-base-100 rounded-none h-12 mt-4 border-b-2">
                             <figure className="w-1/12 mr-2"><img src={item.image} alt="product"/></figure>
                             <Link to={`/product/${item.product}`} className="hover:underline text-sm text-black font-semibold m-2 w-3/5">
                                 {item.name}
@@ -144,7 +149,8 @@ function OrderScreen() {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 my-4">
-                        <button className={order.isPaid ? 'hidden' : 'btn mx-5 rounded-none text-white hover:scale-105'} onClick={payHandler}>Proceed To Pay</button>
+                        {!user.isAdmin && <button className={order.isPaid ? 'hidden' : 'btn mx-5 rounded-none text-white hover:scale-105'} onClick={payHandler}>Proceed To Pay</button>}
+                        {user.isAdmin && <button disabled={!order.isPaid} className={order.isDelivered ? 'hidden' : 'btn mx-5 rounded-none text-white hover:scale-105'} onClick={deliverHandler}>Mark As Delivered</button>}
                 </div>
             </div>
         </div>

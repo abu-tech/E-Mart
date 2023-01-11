@@ -2,8 +2,8 @@ import { Navigate, Outlet } from "react-router-dom"
 import {useAuthStatus} from '../hooks/useAuthStatus'
 import Loader from "./Loader"
 
-const PrivateRoute = () => {
-    const {isLoggedIn, checkingStatus} = useAuthStatus()
+const AdminRoute = () => {
+    const {isLoggedIn, checkingStatus, admin} = useAuthStatus()
 
     if(checkingStatus){
         return <Loader />
@@ -11,8 +11,8 @@ const PrivateRoute = () => {
 
 
   return (
-    isLoggedIn ? <Outlet /> : <Navigate to='/login' />
+    (isLoggedIn && admin) ? <Outlet /> : <Navigate to='/' />
   )
 }
 
-export default PrivateRoute
+export default AdminRoute

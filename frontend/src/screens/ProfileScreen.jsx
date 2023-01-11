@@ -13,7 +13,7 @@ function ProfileScreen() {
     const [changeDetails, setChangeDetails] = useState(false)
     const [changePassword, setChangePassword] = useState(false)
     const {user, isLoading, isError, isSuccess, message} = useSelector(state => state.auth)
-    const {orders, isLoading: ordersLoading, isError: ordersError, message: ordersMessage} = useSelector(state => state.allOrders)
+    const {orders, isLoading: ordersLoading, isError: ordersError, message: ordersMessage} = useSelector(state => state.orderList)
     const [formData, setFormData] = useState({
         name: user.name,
         email: user.email,
@@ -118,13 +118,13 @@ function ProfileScreen() {
                     </thead>
                     <tbody>
                         {orders.map((order, index) => (
-                            <tr>
+                            <tr key={order._id}>
                                 <th>{index + 1}</th>
                                 <td>{order._id}</td>
                                 <td>{new Date(order.createdAt).toLocaleString('en-IN').substring(0,8)}</td>
                                 <td>{order.isPaid ? <GiCheckMark /> : <GiCrossMark />}</td>
                                 <td>{order.isDelivered ? <GiCheckMark /> : <GiCrossMark />}</td>
-                                <td><Link to={`/orders/${order._id}`} className="btn btn-ghost btn-xs">details</Link></td>
+                                <td><Link to={`/orders/${order._id}`} className="btn btn-ghost bg-base-200 btn-xs">details</Link></td>
                             </tr>
                         ))}
                     </tbody>

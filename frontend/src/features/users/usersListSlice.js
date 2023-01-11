@@ -1,44 +1,22 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import authService from './authService'
+import usersListService from './usersListService'
 
-const user = JSON.parse(localStorage.getItem('user'))
 
 const initialState = {
-    user: user ? user : null,
+    allUsers: [],
+    editUser:{},
     isError: false,
     isSuccess: false,
     isLoading: false,
+    editSuccess: false,
     message: ''
 }
 
-export const registerUser = createAsyncThunk('auth/register', async (user, thunkAPI) => {
-    try {
-        return await authService.register(user)
-    } catch (error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
-
-        return thunkAPI.rejectWithValue(message)
-    }
-})
-
-export const loginUser = createAsyncThunk('auth/login', async (user, thunkAPI) => {
-    try {
-        return await authService.login(user)
-    } catch (error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
-
-        return thunkAPI.rejectWithValue(message)
-    }
-})
-
-export const logout = createAsyncThunk('auth/logout', async () => {
-    await authService.logout()
-})
-
-export const getUserDetails = createAsyncThunk('user/getUserDetails', async (_, thunkAPI) => {
+export const getAllUsers = createAsyncThunk('allUsers/get', async (_, thunkAPI)=> {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await authService.getUser(token)
+
+        return await usersListService.getAllUsers(token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -46,10 +24,11 @@ export const getUserDetails = createAsyncThunk('user/getUserDetails', async (_, 
     }
 })
 
-export const updateUserDetails = createAsyncThunk('user/updateUserDetails', async (updatedData, thunkAPI) => {
+export const getUserById = createAsyncThunk('editUser/get', async (userId, thunkAPI)=> {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await authService.updateUser(updatedData, token)
+
+        return await usersListService.getUserById(userId, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -57,8 +36,32 @@ export const updateUserDetails = createAsyncThunk('user/updateUserDetails', asyn
     }
 })
 
-export const authSlice = createSlice({
-    name: 'auth',
+export const updateUser = createAsyncThunk('user/update', async ({userId, userData}, thunkAPI)=> {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+
+        return await usersListService.updateUser(userId, userData, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+export const deleteUser = createAsyncThunk('user/delete', async (userId, thunkAPI)=> {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+
+        return await usersListService.deleteUser(userId, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+export const usersListSlice = createSlice({
+    name: 'userList',
     initialState,
     reducers: {
         reset: (state) => {
@@ -66,61 +69,68 @@ export const authSlice = createSlice({
             state.isError = false
             state.isSuccess = false 
             state.message = ''
+            state.editSuccess = false
+            state.isDeleted = false
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(registerUser.pending, (state) => {
+            .addCase(getAllUsers.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(registerUser.fulfilled, (state, action) => {
+            .addCase(getAllUsers.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                state.allUsers = action.payload
             })
-            .addCase(registerUser.rejected, (state,  action) => {
+            .addCase(getAllUsers.rejected, (state,  action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
-                state.user = null
+                state.allUsers = null
             })
-            .addCase(loginUser.pending, (state) => {
+            .addCase(deleteUser.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(loginUser.fulfilled, (state, action) => {
+            .addCase(deleteUser.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                state.isDeleted = true
             })
-            .addCase(loginUser.rejected, (state,  action) => {
+            .addCase(deleteUser.rejected, (state,  action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
-                state.user = null
             })
-            .addCase(logout.pending, (state) => {
+            .addCase(getUserById.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(logout.fulfilled, (state) => {
-                state.isLoading = false
-                state.user = null 
-            })
-            .addCase(updateUserDetails.pending, (state) => {
-                state.isLoading = true
-            })
-            .addCase(updateUserDetails.fulfilled, (state, action) => {
+            .addCase(getUserById.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                state.editUser = action.payload
             })
-            .addCase(updateUserDetails.rejected, (state,  action) => {
+            .addCase(getUserById.rejected, (state,  action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
-                state.user = null
+            })
+            .addCase(updateUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.editUser = action.payload
+                state.editSuccess = true
+            })
+            .addCase(updateUser.rejected, (state,  action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
             })
     }
 })
 
-export const {reset} = authSlice.actions
-export default authSlice.reducer
+export const {reset} = usersListSlice.actions
+export default usersListSlice.reducer

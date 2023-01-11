@@ -67,8 +67,19 @@ const getUserProfile = asyncHandler(async (req, res) => {
             isAdmin: user.isAdmin,
         })
     } else {
-        res.status(401)
+        res.status(404)
         throw new Error('User Not Found!')
+    }
+})
+
+const getAllUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({})
+
+    if(users){
+        res.status(200).json(users)
+    } else {
+        res.status(404)
+        throw new Error('Users not found')
     }
 })
 
@@ -93,11 +104,56 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         })
 
     } else {
-        res.status(401)
+        res.status(404)
         throw new Error('User Not Found!')
     }
 })
 
+const getUserById = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password')
+
+    if(user){
+        res.status(200).json(user)
+    } else {
+        res.status(404)
+        throw new Error('Users not found')
+    }
+})
+
+const updateUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if(user){
+        user.name = req.body.name || user.name,
+        user.email = req.body.email || user.email
+        user.isAdmin = req.body.isAdmin
+
+        const updatedUser = await user.save()
+
+        res.status(200).json({
+            _id: updatedUser._id,
+            name: updatedUser.name, 
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
+        })
+
+    } else {
+        res.status(404)
+        throw new Error('User Not Found!')
+    }
+})
+
+const deleteUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if(user){
+        await user.remove()
+        res.status(200).json({message: "user removed"})
+    } else {
+        res.status(404)
+        throw new Error('User not found')
+    }
+})
 
 const generateToken = (id) => {
     return jwt.sign({id},process.env.JWT_SECRET, {
@@ -109,5 +165,9 @@ export {
     registerUser, 
     loginUser,
     getUserProfile,
-    updateUserProfile
+    getAllUsers,
+    updateUserProfile,
+    deleteUser,
+    getUserById,
+    updateUser
 }

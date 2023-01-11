@@ -1,7 +1,7 @@
 import axios from 'axios'
 const API_URL = '/api/orders'
 
-export const createOrder = async (order, token) => {
+const createOrder = async (order, token) => {
     const config = {
         headers:{
             Authorization: `Bearer ${token}`
@@ -13,7 +13,7 @@ export const createOrder = async (order, token) => {
     return res.data
 }
 
-export const getOrder = async (orderId, token) => {
+const getOrder = async (orderId, token) => {
     const config = {
         headers:{
             Authorization: `Bearer ${token}`
@@ -25,7 +25,7 @@ export const getOrder = async (orderId, token) => {
     return res.data
 }
 
-export const payOrder = async (order, token) => {
+const payOrder = async (order, token) => {
     const config = {
         headers:{
             Authorization: `Bearer ${token}`
@@ -37,10 +37,23 @@ export const payOrder = async (order, token) => {
     return res.data
 }
 
+const deliverOrder = async (order, token) => {
+    const config = {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const res = await axios.put(API_URL + `/${order._id}/deliver`, {}, config)
+
+    return res.data
+}
+
 const orderDetailsService = {
     createOrder,
     getOrder,
-    payOrder
+    payOrder,
+    deliverOrder
 }
 
 export default orderDetailsService

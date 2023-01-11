@@ -61,13 +61,13 @@ function LoginScreen() {
                 <h1 className='text-center text-black text-2xl font-semibold'>SIGN IN</h1>
                 <div className="form-control">
                 <label className="label">
-                    <span className="label-text flex items-center font-semibold"><FaUserTie /><p className='mx-0.5'>Email</p></span>
+                    <span className="label-text flex items-center font-semibold"><FaUserTie /><p className='mx-1'>Email</p></span>
                 </label>
                 <input type="email" placeholder="Email" id='email' className="input input-bordered" value={email} onChange={onChange}/>
                 </div>
                 <div className="form-control">
                 <label className="label">
-                <span className="label-text flex items-center font-semibold"><FaLock /><p className='mx-0.5'>Password</p></span>
+                <span className="label-text flex items-center font-semibold"><FaLock /><p className='mx-1'>Password</p></span>
                 </label>
                 <input type="password" placeholder="Password" id='password' className="input input-bordered" value={password} onChange={onChange}/>
                 <label className="label">
