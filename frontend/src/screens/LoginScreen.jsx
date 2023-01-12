@@ -6,6 +6,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {loginUser, reset} from '../features/auth/authSlice'
 import Loader from '../components/Loader'
 import { Player } from '@lottiefiles/react-lottie-player'
+import {motion} from 'framer-motion'
 
 function LoginScreen() {
     const [formData, setFormData] = useState({
@@ -51,6 +52,11 @@ function LoginScreen() {
     }
 
   return (
+    <motion.div
+	animate={{width: '100%'}}
+    initial={{width: 0}}
+    exit={{x: window.innerWidth}}
+	>
     <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
             <div className="w-auto">
@@ -81,6 +87,7 @@ function LoginScreen() {
             </div>
         </div>
     </div>
+    </motion.div>
   )
 }
 

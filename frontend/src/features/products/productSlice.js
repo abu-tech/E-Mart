@@ -5,15 +5,18 @@ import productService from './productService';
 const initialState = {
     products:[],
     product: { reviews:[] },
+    topProducts: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: ''
+    message: '',
+    pages: null,
+    page: null
 }
 
-export const getAllProducts = createAsyncThunk('products/getAll', async (_, thunkAPI) => {
+export const getAllProducts = createAsyncThunk('product/getAll', async ({searchWord, pageNumber}, thunkAPI) => {
     try {
-        return await productService.getAll()
+        return await productService.getAll(searchWord, pageNumber)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -24,6 +27,16 @@ export const getAllProducts = createAsyncThunk('products/getAll', async (_, thun
 export const getProduct = createAsyncThunk('product/get', async (productId, thunkAPI) => {
     try {
         return await productService.get(productId)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+export const getTopProducts = createAsyncThunk('product/getTopAll', async (_, thunkAPI) => {
+    try {
+        return await productService.getTopProducts()
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -64,6 +77,17 @@ export const deleteProduct = createAsyncThunk('product/delete', async (productId
     }
 })
 
+export const createReview = createAsyncThunk('review/create', async ({productId, review}, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await productService.createReview(productId, review, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const productSlice = createSlice({
     name: 'product',
     initialState,
@@ -76,6 +100,7 @@ export const productSlice = createSlice({
             state.isCreated = false
             state.isDeleted = false
             state.editProduct = false
+            state.isReviewCreated = false
         }
     },
     extraReducers: (builder) => {
@@ -86,7 +111,9 @@ export const productSlice = createSlice({
             .addCase(getAllProducts.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true 
-                state.products = action.payload
+                state.products = action.payload.products
+                state.pages = action.payload.pages
+                state.page = action.payload.page
             })
             .addCase(getAllProducts.rejected, (state, action) => {
                 state.isLoading = false
@@ -143,6 +170,32 @@ export const productSlice = createSlice({
                 state.editProduct = true
             })
             .addCase(updateProduct.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true 
+                state.message = action.payload
+            })
+            .addCase(createReview.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(createReview.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true 
+                state.isReviewCreated = true
+            })
+            .addCase(createReview.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true 
+                state.message = action.payload
+            })
+            .addCase(getTopProducts.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getTopProducts.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true 
+                state.topProducts = action.payload
+            })
+            .addCase(getTopProducts.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true 
                 state.message = action.payload

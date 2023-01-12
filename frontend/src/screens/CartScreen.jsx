@@ -31,7 +31,7 @@ function CartScreen() {
                 </div>
                 </div> :
                     cartItems.map((item) => (
-                            <div className="card card-side bg-base-100 rounded-none h-1/6 mt-4 border-b-2 h-32">
+                            <div key={item._id} className="card card-side bg-base-100 rounded-none h-1/6 mt-4 border-b-2 h-32">
                             <figure className="w-1/4 mr-2"><img src={item.image} alt="product"/></figure>
                             <Link to={`/product/${item.product}`} className="hover:underline text-md text-black font-semibold m-2 w-1/6">
                                 {item.name}

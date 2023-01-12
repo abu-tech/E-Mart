@@ -20,6 +20,7 @@ import EditUserScreen from './screens/EditUserScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import NotFound from './screens/NotFound'
 
 function App() {
   return (
@@ -29,6 +30,9 @@ function App() {
           <main className="min-h-screen bg-base-100 mx-auto">
             <Routes>
               <Route path='/' element={<HomeScreen />} />
+              <Route path='/search/:keyword' element={<HomeScreen />} />
+              <Route path='/page/:pageNumber' element={<HomeScreen />} />
+              <Route path='/search/:keyword/page/:pageNumber' element={<HomeScreen />} />
               <Route path='/product/:id' element={<ProductScreen />} />
               <Route path='/cart' element={<CartScreen />} />
               <Route path='/register' element={<RegisterScreen />} />
@@ -57,12 +61,16 @@ function App() {
               <Route path='/admin/products' element={<AdminRoute />}>
                 <Route path='/admin/products' element={<ProductListScreen />} />
               </Route>
+              <Route path='/admin/products/:pageNumber' element={<AdminRoute />}>
+                <Route path='/admin/products/:pageNumber' element={<ProductListScreen />} />
+              </Route>
               <Route path='/admin/products/:id/edit' element={<AdminRoute />}>
                 <Route path='/admin/products/:id/edit' element={<ProductEditScreen />} />
               </Route>
               <Route path='/admin/orders' element={<AdminRoute />}>
                 <Route path='/admin/orders' element={<OrderListScreen />} />
               </Route>
+              <Route path='/*' element={<NotFound />} />
             </Routes>
           </main>
         <Footer />

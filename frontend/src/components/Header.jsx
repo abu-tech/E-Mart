@@ -29,13 +29,10 @@ function Header() {
           <Link to='/' className="btn btn-ghost normal-case text-lg lg:text-2xl lg:mx-12"><FaFeatherAlt /><p className='mx-2'>E-Mart</p></Link>
         </div>
         <div className="navbar-end">
-              <div className="form-control lg:mx-4">
-                <input type="text" placeholder="Search" className="input input-bordered text-black" />
-              </div>
               <Link to='/cart' className="btn bg-white btn-circle text-black hover:bg-white hover:scale-105 lg:mx-4">
                   <div className="indicator">
                     <ImCart />
-                    {qty > 0 && <span className="badge badge-sm text-white indicator-item">{qty}</span>}
+                    {qty > 0 && <span className="badge badge-sm text-white indicator-item left-0">{qty}</span>}
                   </div>
               </Link>
               {user && !user.isAdmin && (
@@ -45,7 +42,7 @@ function Header() {
                   </label>
                   <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
                     <li onClick={document.activeElement.blur()}><Link to='/profile' className="justify-between text-black font-medium">Profile</Link></li>
-                    <li className='text-black' onClick={document.activeElement.blur()}><button className='font-medium' onClick={logoutHandle}>Logout</button></li>
+                    <li onClick={document.activeElement.blur()}><button className='font-medium text-black' onClick={logoutHandle}>Logout</button></li>
                   </ul>
                 </div> 
               )}

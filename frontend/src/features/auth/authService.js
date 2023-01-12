@@ -46,7 +46,6 @@ const updateUser = async (updatedData, token) => {
         localStorage.setItem('user', JSON.stringify(res.data))
     }
 
-
     return res.data
 }
 

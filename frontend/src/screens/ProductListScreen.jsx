@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import {Link, useNavigate} from 'react-router-dom'
+import {Link, useNavigate, useParams} from 'react-router-dom'
 import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 import { useSelector, useDispatch } from "react-redux"
@@ -7,11 +7,15 @@ import {getAllProducts, deleteProduct, createProduct, reset} from '../features/p
 import {BiEdit} from 'react-icons/bi'
 import {AiFillDelete} from 'react-icons/ai'
 import {FaPlus} from 'react-icons/fa'
+import PaginationComponent from "../components/PaginationComponent"
 
 function ProductListScreen() {
-    const {products, isLoading, isError, messsage, isDeleted, isCreated, product} = useSelector(state => state.products)
+    const {products, isLoading, isError, messsage, isDeleted, isCreated, product, pages, page} = useSelector(state => state.products)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const params = useParams()
+    const pageNumber = params.pageNumber || 1
+
 
     useEffect(() => {
         if(isError){
@@ -28,8 +32,8 @@ function ProductListScreen() {
             dispatch(reset())
         }
 
-        dispatch(getAllProducts())
-    }, [dispatch, isError, messsage, isDeleted, navigate, product._id, isCreated])
+        dispatch(getAllProducts({searchWord: '', pageNumber}))
+    }, [dispatch, isError, messsage, isDeleted, navigate, product._id, isCreated, pageNumber])
 
     const deleteProductHandler = (productId) => {
         dispatch(deleteProduct(productId))
@@ -78,8 +82,11 @@ function ProductListScreen() {
             ))}
         </tbody>
         </table>
-    </div> 
+      </div> 
       }
+      <div className='w-full flex flex justify-center mt-6'>
+          <PaginationComponent pages={pages} page={page} isAdmin={true} />
+      </div>
     </>
   )
 }

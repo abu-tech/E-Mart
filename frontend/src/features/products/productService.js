@@ -1,14 +1,20 @@
 import axios from "axios"
 const API_URL = '/api/products'
 
-const getAll = async () => {
-    const res = await axios.get(API_URL)
+const getAll = async (keyword, pageNumber) => {
+    const res = await axios.get(API_URL + `/?keyword=${keyword}&pageNumber=${pageNumber}`)
 
     return res.data
 }
 
 const get = async (productId) => {
     const res = await axios.get(API_URL + `/${productId}`)
+
+    return res.data
+}
+
+const getTopProducts = async () => {
+    const res = await axios.get(API_URL + '/top')
 
     return res.data
 }
@@ -46,12 +52,25 @@ const updateProduct = async (productId, productData, token) => {
     return res.data
 }
 
+const createReview = async (productId, review, token) => {
+    const config = {
+        headers:{
+            authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.post(API_URL + `/${productId}/reviews`, review, config)
+
+    return res.data
+}
+
 const productService = {
     getAll, 
     get,
+    getTopProducts,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    createReview
 }
 
 export default productService
