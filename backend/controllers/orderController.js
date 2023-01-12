@@ -7,6 +7,9 @@ dotenv.config()
 
 const stripe = new Stripe(process.env.STRIPE_KEY)
 
+//@desc create order
+//@route POST /api/orders
+//@access private
 const addOrderItems = asyncHandler(async (req, res) => {
     const {
         orderItems,
@@ -36,6 +39,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc get order by id
+//@route GET /api/orders/:id
+//@access private
 const getOrderById = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate('user', 'name email')
 
@@ -47,6 +53,9 @@ const getOrderById = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc get User Orders
+//@route GET /api/orders/myorders
+//@access private
 const getUserOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({user: req.user._id})
 
@@ -58,6 +67,9 @@ const getUserOrders = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc get all orders
+//@route GET /api/orders
+//@access private/admin
 const getAllOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({}).populate('user', 'name email')
 
@@ -69,6 +81,9 @@ const getAllOrders = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc pay order
+//@route POST /api/orders/:id/pay
+//@access private
 const payOrder = asyncHandler(async (req, res) => {
     const {totalPrice, _id} = req.body
 
@@ -105,6 +120,9 @@ const payOrder = asyncHandler(async (req, res) => {
       res.status(200).json({url: session.url})
 })
 
+//@desc update order to delivered
+//@route PUT /api/orders/:id/deliver
+//@access private/admin
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id)
 

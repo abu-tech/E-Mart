@@ -2,6 +2,9 @@ import User from '../models/userModel.js'
 import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
 
+//@desc register user
+//@route POST /api/users
+//@access public
 const registerUser = asyncHandler(async (req, res) => {
     const {email, name, password} = req.body
     if(!name || !email || !password){
@@ -37,6 +40,9 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc login user
+//@route POST /api/users/login
+//@access public
 const loginUser = asyncHandler(async (req, res) => {
     const {email, password} = req.body
     const user = await User.findOne({email})
@@ -56,6 +62,9 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc get user profile
+//@route GET /api/users/profile
+//@access private
 const getUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
 
@@ -72,6 +81,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc get all users
+//@route GET /api/users
+//@access private/admin
 const getAllUsers = asyncHandler(async (req, res) => {
     const users = await User.find({})
 
@@ -83,6 +95,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc update user profile
+//@route PUT /api/users/profile
+//@access private
 const updateUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
 
@@ -109,6 +124,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc get user by id
+//@route GET /api/users/:id
+//@access private/admin
 const getUserById = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id).select('-password')
 
@@ -120,6 +138,9 @@ const getUserById = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc update user
+//@route POST /api/users/:id
+//@access private/admin
 const updateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
 
@@ -143,6 +164,9 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc delete user
+//@route DELETE /api/users/:id
+//@access private/admin
 const deleteUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
 

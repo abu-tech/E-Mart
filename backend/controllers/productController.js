@@ -1,6 +1,9 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 
+//@desc get all products
+//@route GET /api/products
+//@access public
 const getAllProducts = asyncHandler(async (req, res) => {
     const pageSize = 10
     const page = Number(req.query.pageNumber) || 1
@@ -21,6 +24,9 @@ const getAllProducts = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc get product
+//@route GET /api/products/:id
+//@access public
 const getProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
 
@@ -32,6 +38,9 @@ const getProduct = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc get top prdoucts
+//@route GET /api/products/top
+//@access public
 const getTopProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({}).sort({rating: -1}).limit(4)
 
@@ -43,6 +52,9 @@ const getTopProducts = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc delete product
+//@route DELETE /api/products/:id
+//@access private/admin
 const deleteProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
 
@@ -55,6 +67,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc create product
+//@route POST /api/products
+//@access private/admin
 const createProduct = asyncHandler(async (req, res) => {
     const product = new Product({
         name: 'Sample Name',
@@ -72,6 +87,9 @@ const createProduct = asyncHandler(async (req, res) => {
     res.status(201).json(createdProduct)
 })
 
+//@desc update product
+//@route PUT /api/products/:id
+//@access private/admin
 const updateProduct = asyncHandler(async (req, res) => {
     const {
         name,
@@ -102,6 +120,9 @@ const updateProduct = asyncHandler(async (req, res) => {
     }
 })
 
+//@desc create review
+//@route POST /api/products/:id/reviews
+//@access private
 const createProductReview = asyncHandler(async (req, res) => {
     const {rating, comment} = req.body
 

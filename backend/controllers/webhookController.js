@@ -1,7 +1,9 @@
 import Order from '../models/orderModel.js'
 import stripe from 'stripe'
 
-
+//@desc update order (stripe webhook)
+//@route POST /api/stripe/webhook
+//@access private
 //stripe webhook
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 const endpointSecret = process.env.ENDPOINT_SECRET

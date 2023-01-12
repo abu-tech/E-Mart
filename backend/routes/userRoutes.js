@@ -6,31 +6,12 @@ import {protect, isAdmin} from '../middleware/authMiddleware.js'
 //desc register user
 //route POST /api/users
 //access public
-router
-    .route('/')
-    .post(registerUser)
-    .get(protect, isAdmin, getAllUsers)
+router.route('/').post(registerUser).get(protect, isAdmin, getAllUsers)
     
+router.route('/login').post(loginUser)
 
-//desc login user
-//route POST /api/users/login
-//access public
-router
-    .route('/login')
-    .post(loginUser)
+router.route('/profile').get(protect, getUserProfile).put(protect, updateUserProfile)
 
-//desc get user profile
-//route /api/users/profile
-//access private
-router
-    .route('/profile')
-    .get(protect, getUserProfile)
-    .put(protect, updateUserProfile)
-
-router
-    .route('/:id')
-    .get(protect, isAdmin, getUserById)
-    .put(protect, isAdmin, updateUser)
-    .delete(protect, isAdmin, deleteUser)
+router.route('/:id').get(protect, isAdmin, getUserById).put(protect, isAdmin, updateUser).delete(protect, isAdmin, deleteUser)
 
 export default router
