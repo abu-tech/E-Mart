@@ -48,7 +48,7 @@ function ProductScreen() {
     }
 
   return (
-    <div className='mx-12 lg:mx-20 my-10'>
+    <div className='mx-8 lg:mx-20 my-10'>
         <BackButton url="/" />
         {isLoading ? <Loader /> :
             <>
@@ -66,27 +66,29 @@ function ProductScreen() {
                         <div className="divider"></div> 
                         <p className='text-black font-medium'>Description: {product.description}</p>
                     </div>
-                    <div className="card w-auto h-56 bg-base-100 rounded-none mx-5 grid grid-rows-4 border-2 divide-y-2 my-4 lg:my-0">
-                        <div className="grid grid-cols-2 text-xl font-medium text-black">
-                            <h1 className='m-auto'>Price:</h1>
-                            <h1 className='m-auto '>&#8377; {product.price}</h1>
+                    <div>
+                        <div className="card w-auto h-48 bg-base-100 rounded-none mx-5 grid grid-rows-3 border-2 divide-y-2 my-4 lg:my-0">
+                            <div className="grid grid-cols-2 text-xl font-medium text-black">
+                                <h1 className='m-auto'>Price:</h1>
+                                <h1 className='m-auto '>&#8377; {product.price}</h1>
+                            </div>
+                            <div className="grid grid-cols-2 text-xl font-medium text-black">
+                                <h1 className='m-auto'>Status:</h1>
+                                <h1 className='m-auto'>{product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}</h1>
+                            </div>
+                            <div className="grid grid-cols-2 text-xl font-medium text-black">
+                                <h1 className='m-auto'>Qty:</h1>
+                                <select className="select m-auto bg-gray-100" value={qty} onChange={(e) => setQty(Number(e.target.value))} disabled={product.countInStock === 0}>
+                                {[...Array(product.countInStock).keys()].map(x => (
+                                    <option value={x + 1} key={x + 1}>
+                                        {x + 1}
+                                    </option>
+                                ))}
+                                </select>
+                            </div>
                         </div>
-                        <div className="grid grid-cols-2 text-xl font-medium text-black">
-                            <h1 className='m-auto'>Status:</h1>
-                            <h1 className='m-auto'>{product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}</h1>
-                        </div>
-                        <div className="grid grid-cols-2 text-xl font-medium text-black">
-                            <h1 className='m-auto'>Qty:</h1>
-                            <select className="select m-auto bg-gray-100" value={qty} onChange={(e) => setQty(Number(e.target.value))} disabled={product.countInStock === 0}>
-                            {[...Array(product.countInStock).keys()].map(x => (
-                                <option value={x + 1} key={x + 1}>
-                                    {x + 1}
-                                </option>
-                            ))}
-                            </select>
-                        </div>
-                        <div className="grid grid-cols-1">
-                            <button className='btn mx-5 my-auto rounded-none text-white hover:scale-105' onClick={handleCart} disabled={product.countInStock === 0}>Add To Cart</button>
+                        <div className="grid grid-cols-1 mt-3 mb-6">
+                                <button className='btn mx-5 my-auto rounded-none text-white hover:scale-105' onClick={handleCart} disabled={product.countInStock === 0}>Add To Cart</button>
                         </div>
                     </div>
                 </div>

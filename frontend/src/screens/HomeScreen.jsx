@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {BsSearch} from 'react-icons/bs'
 import {toast} from 'react-toastify'
-import {getAllProducts, getTopProducts} from '../features/products/productSlice'
+import {getAllProducts, getTopProducts, reset} from '../features/products/productSlice'
 import Product from '../components/Product'
 import Loader from '../components/Loader'
 import PaginationComponent from '../components/PaginationComponent'
@@ -27,6 +27,7 @@ function HomeScreen() {
     
     if(isError){
       toast.error(message)
+      dispatch(reset())
     }
   }, [dispatch, isError, message, searchWord, pageNumber])
 

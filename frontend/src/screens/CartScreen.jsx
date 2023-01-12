@@ -20,8 +20,8 @@ function CartScreen() {
   return (
     <>
     <h1 className="text-4xl text-black my-6 mx-12">SHOPPING CART</h1>
-    <div className="flex flex-col lg:flex-row mx-12 mt-4">
-        <div className="flex-auto w-2/3">
+    <div className="flex flex-col lg:flex-row mx-4 mt-4 lg:mx-12">
+        <div className="flex-auto lg:w-2/3">
             <BackButton url='/' />
             {cartItems.length === 0 ? 
                 <div className="alert alert-warning shadow-sm rounded-none mt-4">
@@ -31,14 +31,14 @@ function CartScreen() {
                 </div>
                 </div> :
                     cartItems.map((item) => (
-                            <div key={item._id} className="card card-side bg-base-100 rounded-none h-1/6 mt-4 border-b-2 h-32">
-                            <figure className="w-1/4 mr-2"><img src={item.image} alt="product"/></figure>
-                            <Link to={`/product/${item.product}`} className="hover:underline text-md text-black font-semibold m-2 w-1/6">
+                            <div key={item._id} className="card card-side bg-base-100 rounded-none mt-4 border-b-2 h-12 lg:h-32">
+                            <figure className="w-1/4 mr-1"><img src={item.image} alt="product"/></figure>
+                            <Link to={`/product/${item.product}`} className="hover:underline text-xs text-black font-semibold m-1 lg:text-lg lg:w-1/6">
                                 {item.name}
                             </Link>
-                            <h1 className="text-md text-black font-semibold m-2 w-1/6">&#8377; {item.price}</h1>
+                            <h1 className="text-xs text-black font-semibold my-2 lg:w-1/6 lg:text-lg">&#8377; {item.price}</h1>
                             <div className="w-1/6">
-                                <select className="select m-auto bg-gray-100" value={item.qty} onChange={(e) => dispatch(addToCart({productId: item.product, qty: Number(e.target.value)}))} disabled={item.countInStock === 0}>
+                                <select className="select bg-gray-100" value={item.qty} onChange={(e) => dispatch(addToCart({productId: item.product, qty: Number(e.target.value)}))} disabled={item.countInStock === 0}>
                                     {[...Array(item.countInStock).keys()].map(x => (
                                         <option value={x + 1} key={x + 1}>
                                             {x + 1}
@@ -47,13 +47,13 @@ function CartScreen() {
                                 </select>
                             </div>
                             <div className="w-1/6">
-                                <button className="btn btn-circle text-white hover:scale-105" onClick={() => removeFromCartHandler(item.product)}><AiFillDelete /></button>
+                                <button className="btn btn-sm btn-circle text-white hover:scale-105 lg:btn-md" onClick={() => removeFromCartHandler(item.product)}><AiFillDelete /></button>
                             </div>
                             </div>
                     ))
             }
         </div>
-        <div className="flex-auto w-1/3">
+        <div className="flex-auto lg:w-1/3">
             <div className="card w-auto h-52 bg-base-100 rounded-none mx-5 grid grid-rows-3 border-2 divide-y-2 my-4 lg:my-0">
                 <div className="grid grid-cols-2 text-xl font-medium text-black">
                     <h1 className='m-auto'>Total Items:</h1>

@@ -53,11 +53,11 @@ function OrderScreen() {
 
   return (
     <>
-        <div className="flex flex-col lg:flex-row mx-12 mt-4 p-4">
-            <div className='flex-auto w-2/3'>
-                <h1 className='text-3xl font-semibold px-4'>Order ID: {order._id}</h1>
+        <div className="flex flex-col mx-4 mt-4 p-4 lg:mx-12 lg:flex-row">
+            <div className='flex-auto lg:w-2/3'>
+                <h1 className='text-xl font-semibold px-4 lg:text-3xl'>Order ID: {order._id}</h1>
                 <div className='border-b-2 p-4'>
-                    <h1 className='text-2xl mb-2'>Shipping</h1>
+                    <h1 className='text-xl mb-2 lg:text-2xl'>Shipping</h1>
                     <p className='text-md font-medium my-1'><strong>Name:&nbsp;</strong>{order.user.name}</p>
                     <p className='text-md font-medium my-1'><strong>Email:&nbsp;</strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
                       <p className='text-md font-medium my-1'>
@@ -68,14 +68,14 @@ function OrderScreen() {
                         {order.shippingAddress.country} 
                     </p>
                     {order.isDelivered ? 
-                        <div className="alert alert-success text-black bg-primary shadow-lg w-1/2 mt-1">
+                        <div className="alert alert-success text-black bg-primary shadow-lg mt-1 lg:w-1/2">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             <span>Delivered On: {new Date(order.deliveredAt).toLocaleString('en-IN')}</span>
                         </div>
                         </div>
                         :
-                        <div className="alert alert-warning shadow-lg w-1/2 mt-1 lg:w-1/5">
+                        <div className="alert alert-warning shadow-lg mt-1 lg:w-1/5">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                             <span>Not Delivered</span>
@@ -90,14 +90,14 @@ function OrderScreen() {
                         {order.paymentMethod}
                     </p>
                     {order.isPaid ? 
-                        <div className="alert alert-success text-black bg-primary shadow-lg w-1/2 mt-1">
+                        <div className="alert alert-success text-black bg-primary shadow-lg mt-1 lg:w-1/2">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             <span>Paid On: {new Date(order.paidAt).toLocaleString('en-IN')}</span>
                         </div>
                         </div>
                         :
-                        <div className="alert alert-warning shadow-lg w-1/2 mt-1 lg:w-1/6">
+                        <div className="alert alert-warning shadow-lg mt-1 lg:w-1/6">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                             <span>Not Paid</span>
@@ -117,16 +117,16 @@ function OrderScreen() {
                         order.orderItems.map((item) => (
                             <div key={item._id} className="card card-side bg-base-100 rounded-none h-12 mt-4 border-b-2">
                             <figure className="w-1/12 mr-2"><img src={item.image} alt="product"/></figure>
-                            <Link to={`/product/${item.product}`} className="hover:underline text-sm text-black font-semibold m-2 w-3/5">
+                            <Link to={`/product/${item.product}`} className="hover:underline text-xs text-black font-semibold m-2 w-3/5 lg:text-sm">
                                 {item.name}
                             </Link>
-                            <h1 className="text-md text-black font-semibold m-2 w-1/3">{item.qty} &nbsp; x &nbsp; &#8377; {item.price} = {item.price*item.qty}</h1>
+                            <h1 className="text-xs text-black font-semibold m-2 w-1/3 lg:text-md">{item.qty} &nbsp; x &nbsp; &#8377; {item.price} = {item.price*item.qty}</h1>
                             </div>
                         ))
                     }
                 </div>
             </div>
-            <div className='flex-auto w-1/3'>
+            <div className='flex-auto lg:w-1/3'>
                 <div className="card w-auto h-80 bg-base-100 rounded-none mx-5 grid grid-rows-5 border-2 divide-y-2 my-4 lg:my-0">
                     <div className="grid grid-cols-1">
                         <h1 className='text-2xl m-auto'>Order Summary</h1>

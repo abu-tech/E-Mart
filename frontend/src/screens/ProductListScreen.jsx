@@ -44,7 +44,7 @@ function ProductListScreen() {
     }
 
   return (
-    <>
+    <div className="mb-12">
       <div className="flex justify-between mx-4 lg:mx-12">
         <h1 className="font-semibold text-3xl  text-black my-4">PRODUCTS</h1>
         <button className="btn rounded-none text-white my-4 hover:scale-105" onClick={createProductHandler}><FaPlus /> <p className="mx-1">Create Product</p></button>
@@ -87,7 +87,7 @@ function ProductListScreen() {
       <div className='w-full flex flex justify-center mt-6'>
           <PaginationComponent pages={pages} page={page} isAdmin={true} />
       </div>
-    </>
+    </div>
   )
 }
 

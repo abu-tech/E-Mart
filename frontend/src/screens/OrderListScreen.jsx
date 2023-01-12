@@ -20,7 +20,7 @@ function OrderListScreen() {
     }, [dispatch, isError, message])
 
   return (
-    <>
+    <div className="mb-12">
     <h1 className="font-semibold text-3xl text-center text-black my-4">ORDERS</h1>
     {isLoading ? <Spinner /> :
       <div className="overflow-x-auto text-black mx-4 lg:mx-12">
@@ -58,7 +58,7 @@ function OrderListScreen() {
       </table>
   </div> 
     }
-  </>
+  </div>
   )
 }
 

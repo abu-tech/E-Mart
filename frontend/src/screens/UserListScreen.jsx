@@ -32,7 +32,7 @@ function UserListScreen() {
   }
 
   return (
-    <>
+    <div className="mb-12">
       <h1 className="font-semibold text-3xl text-center text-black my-4">USERS</h1>
       {isLoading ? <Spinner /> :
         <div className="overflow-x-auto text-black mx-4 lg:mx-12">
@@ -67,7 +67,7 @@ function UserListScreen() {
         </table>
     </div> 
       }
-    </>
+    </div>
   )
 }
 

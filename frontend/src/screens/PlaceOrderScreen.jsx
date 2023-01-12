@@ -51,10 +51,10 @@ function PlaceOrderScreen() {
         <div className="mx-auto my-4 w-4/5 lg:w-1/3">
             <CheckOutSteps step1 step2 step3 step4 />
         </div>
-        <div className="flex flex-col lg:flex-row mx-12 mt-4 p-4">
-            <div className='flex-auto w-2/3'>
+        <div className="flex flex-col mx-4 mt-4 p-4 lg:mx-12 lg:flex-row">
+            <div className='flex-auto lg:w-2/3'>
                 <div className='border-b-2 p-4'>
-                    <h1 className='text-2xl mb-2'>Shipping</h1>
+                    <h1 className='text-xl mb-2 lg:text-2xl'>Shipping</h1>
                     <p className='text-md font-medium'>
                         <strong>Address:&nbsp;</strong>
                         {shippingAddress.address}, 
@@ -64,14 +64,14 @@ function PlaceOrderScreen() {
                     </p>
                 </div>
                 <div className='border-b-2 p-4'>
-                    <h1 className='text-2xl mb-2'>Payment Method</h1>
+                    <h1 className='text-xl mb-2 lg:text-2xl'>Payment Method</h1>
                     <p className='text-md font-medium'>
                         <strong>Method:&nbsp;</strong>
                         {paymentMethod}
                     </p>
                 </div>
                 <div className='p-4'>
-                <h1 className='text-2xl mb-2'>Order Items</h1>
+                <h1 className='text-xl mb-2 lg:text-2xl'>Order Items</h1>
                     {cartItems.length === 0 ? 
                     <div className="alert alert-warning shadow-sm rounded-none mt-4">
                     <div>
@@ -81,18 +81,18 @@ function PlaceOrderScreen() {
                     </div> :
                         cartItems.map((item) => (
                             <div className="card card-side bg-base-100 rounded-none h-12 mt-4 border-b-2">
-                            <figure className="w-1/12 mr-2"><img src={item.image} alt="product"/></figure>
-                            <Link to={`/product/${item.product}`} className="hover:underline text-sm text-black font-semibold m-2 w-3/5">
+                            <figure className="w-1/4 lg:mr-2 lg:w-1/12"><img src={item.image} alt="product"/></figure>
+                            <Link to={`/product/${item.product}`} className="hover:underline text-xs text-black font-semibold m-2 lg:text-sm lg:w-3/5">
                                 {item.name}
                             </Link>
-                            <h1 className="text-md text-black font-semibold m-2 w-1/3">{item.qty} &nbsp; x &nbsp; &#8377; {item.price} = {item.price*item.qty}</h1>
+                            <h1 className="text-sm text-black font-semibold m-2 lg:w-1/3">{item.qty} &nbsp; x &nbsp; &#8377; {item.price} = {item.price*item.qty}</h1>
                             </div>
                         ))
                     }
                 </div>
             </div>
-            <div className='flex-auto w-1/3'>
-                <div className="card w-auto h-80 bg-base-100 rounded-none mx-5 grid grid-rows-6 border-2 divide-y-2 my-4 lg:my-0">
+            <div className='flex-auto lg:w-1/3'>
+                <div className="card w-auto h-72 bg-base-100 rounded-none mx-5 grid grid-rows-5 border-2 divide-y-2 my-4 lg:my-0">
                     <div className="grid grid-cols-1">
                         <h1 className='text-2xl m-auto'>Order Summary</h1>
                     </div>
@@ -112,9 +112,9 @@ function PlaceOrderScreen() {
                         <h1 className='m-auto'>Total:</h1>
                         <h1 className='m-auto'>&#8377; {totalPrice}</h1>
                     </div>
-                    <div className="grid grid-cols-1">
-                        <button className='btn mx-5 my-auto rounded-none text-white hover:scale-105'disabled={cartItems.length === 0} onClick={placeOrderHandle}>Place Order</button>
-                    </div>
+                </div>
+                <div className="grid grid-cols-1 mt-3 mb-6">
+                    <button className='btn mx-5 my-auto rounded-none text-white hover:scale-105'disabled={cartItems.length === 0} onClick={placeOrderHandle}>Place Order</button>
                 </div>
             </div>
         </div>
