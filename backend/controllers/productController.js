@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
+import fs from 'fs'
 
 //@desc get all products
 //@route GET /api/products
@@ -57,6 +58,15 @@ const getTopProducts = asyncHandler(async (req, res) => {
 //@access private/admin
 const deleteProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
+    const index = (product.image).indexOf("s")
+    const img = (product.image).substring(index+2)
+
+    //delete image from the uploads folder first
+    fs.unlink(`uploads/${img}`, (err) => {
+        if(err){
+            console.log(err)
+        }
+    })
 
     if(product){
         product.remove()
